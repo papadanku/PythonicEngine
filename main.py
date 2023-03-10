@@ -4,13 +4,13 @@ This module initializes the main graphics application
 """
 
 # Import Python modules
-import pygame as pg
 import moderngl as mgl
+import pygame as pg
 import sys
 
 # Import application modules
-from model import *
 from camera import Camera
+from model import *
 
 class GraphicsEngine():
     def __init__(self, win_size=(1600, 900)):
@@ -26,7 +26,10 @@ class GraphicsEngine():
         # Create OpenGL context
         pg.display.set_mode(self.WIN_SIZE, flags=pg.OPENGL | pg.DOUBLEBUF)
         # Detect and use existing OpenGL context
+        # NOTE: Contexts provides render settings for functions such as depth testing, culling, etc.
         self.ctx = mgl.create_context()
+        # self.ctx.front_face = 'cw'
+        self.ctx.enable(flags=mgl.DEPTH_TEST | mgl.CULL_FACE)
         # Create an object to help track time
         self.clock = pg.time.Clock()
         self.time = 0
