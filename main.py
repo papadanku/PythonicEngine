@@ -1,8 +1,15 @@
 
+"""
+This module initializes the main graphics application
+"""
+
 # Import Python modules
 import pygame as pg
 import moderngl as mgl
 import sys
+
+# Import application modules
+from model import *
 
 class GraphicsEngine():
     def __init__(self, win_size=(1600, 900)):
@@ -21,16 +28,21 @@ class GraphicsEngine():
         self.ctx = mgl.create_context()
         # Create an object to help track time
         self.clock = pg.time.Clock()
+        # Scene
+        self.scene = Triangle(self)
     
     def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                self.scene.destroy()
                 pg.quit()
                 sys.exit()
     
     def render(self):
         # Clear framebuffer
         self.ctx.clear(color=(0.08, 0.16, 0.18))
+        # Render scene
+        self.scene.render()
         # Swap buffers
         pg.display.flip()
     
