@@ -16,7 +16,7 @@ class Triangle:
 
     def render(self):
         self.vao.render()
-    
+
     def destroy(self):
         # Release all data from memory
         # NOTE: OpenGL does not have garbage collection
