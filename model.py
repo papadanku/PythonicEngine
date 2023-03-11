@@ -28,9 +28,11 @@ class Cube:
         return texture
 
     def update(self):
-        # Rotate around the Y-axis
+        # Rotate model around the Y-axis
         m_model = glm.rotate(self.m_model, self.app.time * 0.5, glm.vec3(0, 1, 0))
         self.shader_program['m_model'].write(m_model)
+        # Move camera around the user's input
+        self.shader_program['m_view'].write(self.app.camera.m_view)
 
     def get_model_matrix(self):
         # NOTE: This is just an identity matrix
@@ -67,14 +69,14 @@ class Cube:
         # Get vertex coordinates and convert it to float32
         vertices = [(-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1),
                     (-1, 1, -1), (-1, -1, -1), (1, -1, -1), (1, 1, -1)]
-        
+
         indices = [(0, 2, 3), (0, 1, 2),
                    (1, 7, 2), (1, 6, 7),
                    (6, 5, 4), (4, 7, 6),
                    (3, 4, 5), (3, 5, 0),
                    (3, 7, 4), (3, 2, 7),
                    (0, 6, 1), (0, 5, 6)]
-        
+
         vertex_data = self.get_data(vertices, indices)
 
         tex_coord = [(0, 0), (1, 0), (1, 1), (0, 1)]

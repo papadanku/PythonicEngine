@@ -25,6 +25,9 @@ class GraphicsEngine():
         pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
         # Create OpenGL context
         pg.display.set_mode(self.WIN_SIZE, flags=pg.OPENGL | pg.DOUBLEBUF)
+        # Mouse settings
+        pg.event.set_grab(True)
+        pg.mouse.set_visible(False)
         # Detect and use existing OpenGL context
         # NOTE: Contexts provides render settings for functions such as depth testing, culling, etc.
         self.ctx = mgl.create_context()
@@ -33,6 +36,7 @@ class GraphicsEngine():
         # Create an object to help track time
         self.clock = pg.time.Clock()
         self.time = 0
+        self.delta_time = 0
         # Camera
         self.camera = Camera(self)
         # Scene
@@ -60,8 +64,9 @@ class GraphicsEngine():
         while True:
             self.get_time()
             self.check_events()
+            self.camera.update()
             self.render()
-            self.clock.tick(60)
+            self.delta_time = self.clock.tick(60)
 
 if __name__ == '__main__':
     app = GraphicsEngine()
