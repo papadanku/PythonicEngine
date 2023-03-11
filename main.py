@@ -11,7 +11,9 @@ import sys
 # Import application modules
 from camera import Camera
 from light import Light
+from mesh import Mesh
 from model import *
+from scene import Scene
 
 class GraphicsEngine():
     def __init__(self, win_size=(1600, 900)):
@@ -30,7 +32,7 @@ class GraphicsEngine():
         pg.event.set_grab(True)
         pg.mouse.set_visible(False)
         # Detect and use existing OpenGL context
-        # NOTE: Contexts provides render settings for functions such as depth testing, culling, etc.
+        # NOTE: Contexts provides API functions such renderstates, buffers, etc.
         self.ctx = mgl.create_context()
         # self.ctx.front_face = 'cw'
         self.ctx.enable(flags=mgl.DEPTH_TEST | mgl.CULL_FACE)
@@ -38,17 +40,19 @@ class GraphicsEngine():
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0
-        # Light
+        # Application's light data
         self.light = Light()
-        # Camera
+        # Application's camera data
         self.camera = Camera(self)
-        # Scene
-        self.scene = Cube(self)
+        # Application's mesh data
+        self.mesh = Mesh(self)
+        # Application's scene data
+        self.scene = Scene(self)
 
     def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
-                self.scene.destroy()
+                self.mesh.destroy()
                 pg.quit()
                 sys.exit()
 
