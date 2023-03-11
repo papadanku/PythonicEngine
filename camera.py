@@ -35,6 +35,7 @@ class Camera:
         self.pitch = max(-89, min(89, self.pitch))
 
     def update_camera_vectors(self):
+        # NOTE: We emulate a first-person camera by rotating around the Z-axis and X-axis
         yaw = glm.radians(self.yaw)
         pitch = glm.radians(self.pitch)
 
