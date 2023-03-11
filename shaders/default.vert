@@ -17,6 +17,6 @@ void main()
 {
     uv_0 = in_texcoord_0;
     fragPos = vec3(m_model * vec4(in_position, 1.0));
-    normal = mat3(transpose(inverse(m_model))) * normalize(in_normal);
+    normal = normalize(in_normal) * mat3(transpose(m_model));
     gl_Position = m_proj * m_view * m_model * vec4(in_position, 1.0);
 }
