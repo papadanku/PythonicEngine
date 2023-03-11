@@ -10,6 +10,7 @@ import sys
 
 # Import application modules
 from camera import Camera
+from light import Light
 from model import *
 
 class GraphicsEngine():
@@ -37,6 +38,8 @@ class GraphicsEngine():
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0
+        # Light
+        self.light = Light()
         # Camera
         self.camera = Camera(self)
         # Scene

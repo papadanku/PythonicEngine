@@ -23,6 +23,7 @@ class Cube:
         # NOTE: Flip the texture along the Y-axis because PyGame has a downward Y-axis
         texture = pg.image.load(path).convert()
         texture = pg.transform.flip(texture, flip_x=False, flip_y=True)
+        texture.fill('red')
         texture = self.ctx.texture(size=texture.get_size(), components=3,
                                    data=pg.image.tostring(texture, 'RGB'))
         return texture
@@ -31,8 +32,9 @@ class Cube:
         # Rotate model around the Y-axis
         m_model = glm.rotate(self.m_model, self.app.time * 0.5, glm.vec3(0, 1, 0))
         self.shader_program['m_model'].write(m_model)
-        # Move camera around the user's input
+        # Pass dynamic uniform variables
         self.shader_program['m_view'].write(self.app.camera.m_view)
+        self.shader_program['camPos'].write(self.app.camera.position)
 
     def get_model_matrix(self):
         # NOTE: This is just an identity matrix
@@ -40,6 +42,11 @@ class Cube:
         return m_model
 
     def on_init(self):
+        # Light
+        self.shader_program['light.position'].write(self.app.light.position)
+        self.shader_program['light.Ia'].write(self.app.light.Ia)
+        self.shader_program['light.Id'].write(self.app.light.Id)
+        self.shader_program['light.Is'].write(self.app.light.Is)
         # NOTE: .use() assigns a uniform texture to a shader program
         self.shader_program['u_texture_0'] = 0
         self.texture.use()
@@ -62,35 +69,43 @@ class Cube:
     def get_vao(self):
         # Associate the vertex buffer object with the shader program
         # NOTE: This takes the VBO and converts it to their respective data arrays
-        vao = self.ctx.vertex_array(self.shader_program, [(self.vbo, '2f 3f', 'in_texcoord_0', 'in_position')])
+        vao = self.ctx.vertex_array(self.shader_program, [(self.vbo, '2f 3f 3f', 'in_texcoord_0', 'in_normal', 'in_position')])
         return vao
 
     def get_vertex_data(self):
-        # Get vertex coordinates and convert it to float32
+        # Get vertex coordinates
         vertices = [(-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1),
                     (-1, 1, -1), (-1, -1, -1), (1, -1, -1), (1, 1, -1)]
-
         indices = [(0, 2, 3), (0, 1, 2),
                    (1, 7, 2), (1, 6, 7),
                    (6, 5, 4), (4, 7, 6),
                    (3, 4, 5), (3, 5, 0),
                    (3, 7, 4), (3, 2, 7),
                    (0, 6, 1), (0, 5, 6)]
-
         vertex_data = self.get_data(vertices, indices)
 
+        # Get texture coordinates
         tex_coord = [(0, 0), (1, 0), (1, 1), (0, 1)]
-
         tex_coord_indices = [(0, 2, 3), (0, 1, 2),
                              (0, 2, 3), (0, 1, 2),
                              (0, 1, 2), (2, 3, 0),
                              (2, 3, 0), (2, 0, 1),
                              (0, 2, 3), (0, 1, 2),
                              (3, 1, 2), (3, 0, 1)]
-
         tex_coord_data = self.get_data(tex_coord, tex_coord_indices)
 
-        # NOTE: We horizontally concatonate tex_coord and vertex data
+        # Get normals
+        # NOTE: Multiply tuples by 6 because each face, which has 6 vertices, have the same normal
+        normals = [( 0, 0, 1) * 6,
+                   ( 1, 0, 0) * 6,
+                   ( 0, 0,-1) * 6,
+                   (-1, 0, 0) * 6,
+                   ( 0, 1, 0) * 6,
+                   ( 0,-1, 0) * 6]
+        normals = np.array(normals, dtype='f4').reshape(36, 3)
+
+        # NOTE: We horizontally concatonate per-vertex data
+        vertex_data = np.hstack([normals, vertex_data])
         vertex_data = np.hstack([tex_coord_data, vertex_data])
 
         return vertex_data
