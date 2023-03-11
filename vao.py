@@ -25,6 +25,16 @@ class VAO:
             program=self.program.programs['default'],
             vbo=self.vbo.vbos['cat'])
 
+        # Generate a SkyBox VAO for a specified shader program
+        self.vaos['skybox'] = self.get_vao(
+            program=self.program.programs['skybox'],
+            vbo=self.vbo.vbos['skybox'])
+
+        # Generate an advanced SkyBox VAO for a specified shader program
+        self.vaos['advanced_skybox'] = self.get_vao(
+            program=self.program.programs['advanced_skybox'],
+            vbo=self.vbo.vbos['advanced_skybox'])
+
     # Converts a Vertex Buffer Object (VBO) to a Vertex Array Object (VAO)
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attribs)])
