@@ -78,9 +78,18 @@ class Cube(ExtendedBaseModel):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
 
 
+class MovingCube(Cube):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def update(self):
+        self.m_model = self.get_model_matrix()
+        super().update()
+
+
 class Cat(ExtendedBaseModel):
     def __init__(self, app, vao_name='cat', tex_id='cat',
-                 pos=(0, 0, 0), rot=(-90, 0, 180), scale=(1, 1, 1)):
+                 pos=(0, 0, 0), rot=(-90, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
 
 
@@ -102,7 +111,7 @@ class SkyBox(BaseModel):
         # Assign uniform matrices to a shader program
         self.program['m_proj'].write(self.camera.m_proj)
         self.program['m_view'].write(glm.mat4(glm.mat3(self.camera.m_view)))
-        
+
 
 class AdvancedSkyBox(BaseModel):
     def __init__(self, app, vao_name='advanced_skybox', tex_id='skybox',

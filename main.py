@@ -14,6 +14,7 @@ from light import Light
 from mesh import Mesh
 from model import *
 from scene import Scene
+from scene_renderer import SceneRenderer
 
 class GraphicsEngine():
     def __init__(self, win_size=(1600, 900)):
@@ -48,6 +49,8 @@ class GraphicsEngine():
         self.mesh = Mesh(self)
         # Application's scene data
         self.scene = Scene(self)
+        # Application's scene renderer
+        self.scene_renderer = SceneRenderer(self)
 
     def check_events(self):
         for event in pg.event.get():
@@ -60,7 +63,7 @@ class GraphicsEngine():
         # Clear framebuffer
         self.ctx.clear(color=(0.08, 0.16, 0.18))
         # Render scene
-        self.scene.render()
+        self.scene_renderer.render()
         # Swap buffers
         pg.display.flip()
 
