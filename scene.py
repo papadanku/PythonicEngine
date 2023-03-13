@@ -6,12 +6,13 @@ This module processes an application's scene objects
 
 # Import application modules
 from model import *
+import glm
 
 
 class Scene:
     def __init__(self, app):
         self.app = app
-        self.objects = list()
+        self.objects = []
         self.load()
         # SkyBox
         self.skybox = AdvancedSkyBox(app)

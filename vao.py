@@ -13,16 +13,26 @@ class VAO:
         self.ctx = ctx
         self.vbo = VBO(ctx)
         self.program = ShaderProgram(ctx)
-        self.vaos = dict()
+        self.vaos = {}
 
         # Generate a Cube VAO for a specified shader program
         self.vaos['cube'] = self.get_vao(
             program=self.program.programs['default'],
             vbo=self.vbo.vbos['cube'])
 
+        # Generate a Cube VAO shadow-map for a specified shader program
+        self.vaos['shadow_cube'] = self.get_vao(
+            program=self.program.programs['shadow_map'],
+            vbo=self.vbo.vbos['cube'])
+
         # Generate a Cat VAO for a specified shader program
         self.vaos['cat'] = self.get_vao(
             program=self.program.programs['default'],
+            vbo=self.vbo.vbos['cat'])
+
+        # Generate a Cat VAO shadow-map for a specified shader program
+        self.vaos['shadow_cat'] = self.get_vao(
+            program=self.program.programs['shadow_map'],
             vbo=self.vbo.vbos['cat'])
 
         # Generate a SkyBox VAO for a specified shader program
@@ -37,7 +47,7 @@ class VAO:
 
     # Converts a Vertex Buffer Object (VBO) to a Vertex Array Object (VAO)
     def get_vao(self, program, vbo):
-        vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attribs)])
+        vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attribs)], skip_errors=True)
         return vao
 
     def destroy(self):

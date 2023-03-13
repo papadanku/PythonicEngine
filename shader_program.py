@@ -6,10 +6,11 @@ This module generates and destroys an application's shader programs
 class ShaderProgram:
     def __init__(self, ctx):
         self.ctx = ctx
-        self.programs = dict()
+        self.programs = {}
         self.programs['default'] = self.get_program('default')
         self.programs['skybox'] = self.get_program('skybox')
         self.programs['advanced_skybox'] = self.get_program('advanced_skybox')
+        self.programs['shadow_map'] = self.get_program('shadow_map')
 
     def get_program(self, shader_program_name):
         # Get the vertex shader source code

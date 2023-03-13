@@ -10,7 +10,7 @@ import pywavefront
 
 class VBO:
     def __init__(self, ctx):
-        self.vbos = dict()
+        self.vbos = {}
         self.vbos['cube'] = CubeVBO(ctx)
         self.vbos['cat'] = CatVBO(ctx)
         self.vbos['skybox'] = SkyBoxVBO(ctx)
@@ -45,7 +45,7 @@ class CubeVBO(BaseVBO):
         self.format = '2f 3f 3f'
         self.attribs = ['in_texcoord_0', 'in_normal', 'in_position']
 
-    @ staticmethod
+    @staticmethod
     def get_data(vertices, indices):
         # NOTE: Uses list comprehension to Outputs large list of tuples!
         data = [vertices[ind] for triangle in indices for ind in triangle]
@@ -53,8 +53,9 @@ class CubeVBO(BaseVBO):
 
     def get_vertex_data(self):
         # Get vertex coordinates
-        vertices = [(-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1),
-                    (-1, 1, -1), (-1, -1, -1), (1, -1, -1), (1, 1, -1)]
+        vertices = [(-1, -1, 1), ( 1, -1,  1), (1,  1,  1), (-1, 1,  1),
+                    (-1, 1, -1), (-1, -1, -1), (1, -1, -1), ( 1, 1, -1)]
+
         indices = [(0, 2, 3), (0, 1, 2),
                    (1, 7, 2), (1, 6, 7),
                    (6, 5, 4), (4, 7, 6),
@@ -64,14 +65,14 @@ class CubeVBO(BaseVBO):
         vertex_data = self.get_data(vertices, indices)
 
         # Get texture coordinates
-        tex_coord = [(0, 0), (1, 0), (1, 1), (0, 1)]
+        tex_coord_vertices = [(0, 0), (1, 0), (1, 1), (0, 1)]
         tex_coord_indices = [(0, 2, 3), (0, 1, 2),
                              (0, 2, 3), (0, 1, 2),
                              (0, 1, 2), (2, 3, 0),
                              (2, 3, 0), (2, 0, 1),
                              (0, 2, 3), (0, 1, 2),
-                             (3, 1, 2), (3, 0, 1)]
-        tex_coord_data = self.get_data(tex_coord, tex_coord_indices)
+                             (3, 1, 2), (3, 0, 1),]
+        tex_coord_data = self.get_data(tex_coord_vertices, tex_coord_indices)
 
         # Get normals
         # NOTE: Multiply tuples by 6 because each face, which has 6 vertices, have the same normal
@@ -80,13 +81,12 @@ class CubeVBO(BaseVBO):
                    ( 0, 0,-1) * 6,
                    (-1, 0, 0) * 6,
                    ( 0, 1, 0) * 6,
-                   ( 0,-1, 0) * 6]
+                   ( 0,-1, 0) * 6,]
         normals = np.array(normals, dtype='f4').reshape(36, 3)
 
-        # NOTE: We horizontally concatonate per-vertex data
+        # NOTE: We horizontally concat per-vertex data
         vertex_data = np.hstack([normals, vertex_data])
         vertex_data = np.hstack([tex_coord_data, vertex_data])
-
         return vertex_data
 
 
@@ -110,7 +110,7 @@ class SkyBoxVBO(BaseVBO):
         self.format = '3f'
         self.attribs = ['in_position']
 
-    @ staticmethod
+    @staticmethod
     def get_data(vertices, indices):
         # NOTE: Uses list comprehension to Outputs large list of tuples!
         data = [vertices[ind] for triangle in indices for ind in triangle]
@@ -118,8 +118,9 @@ class SkyBoxVBO(BaseVBO):
 
     def get_vertex_data(self):
         # Get vertex coordinates
-        vertices = [(-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1),
-                    (-1, 1, -1), (-1, -1, -1), (1, -1, -1), (1, 1, -1)]
+        vertices = [(-1, -1, 1), ( 1, -1,  1), (1,  1,  1), (-1, 1,  1),
+                    (-1, 1, -1), (-1, -1, -1), (1, -1, -1), ( 1, 1, -1)]
+
         indices = [(0, 2, 3), (0, 1, 2),
                    (1, 7, 2), (1, 6, 7),
                    (6, 5, 4), (4, 7, 6),
