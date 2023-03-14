@@ -22,6 +22,8 @@ class Texture:
 
     def get_depth_texture(self):
         depth_texture = self.ctx.depth_texture(self.app.WIN_SIZE)
+        depth_texture.repeat_x = False
+        depth_texture.repeat_y = False
         return depth_texture
 
     def get_texture_cube(self, dir_path, ext='png'):

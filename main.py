@@ -35,21 +35,20 @@ class GraphicsEngine():
         # Detect and use existing OpenGL context
         # NOTE: Contexts provides API functions such renderstates, buffers, etc.
         self.ctx = mgl.create_context()
-        # self.ctx.front_face = 'cw'
         self.ctx.enable(flags=mgl.DEPTH_TEST | mgl.CULL_FACE)
         # Create an object to help track time
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0
-        # Application's light data
+        # Light data (positions, transformation)
         self.light = Light()
-        # Application's camera data
+        # Camera data (positions, transformations)
         self.camera = Camera(self)
-        # Application's mesh data
+        # Mesh data (VBOs, VAOs, shader programs, textures)
         self.mesh = Mesh(self)
-        # Application's scene data
+        # Scene data (objects)
         self.scene = Scene(self)
-        # Application's scene renderer
+        # Scene renderer
         self.scene_renderer = SceneRenderer(self)
 
     def check_events(self):

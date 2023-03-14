@@ -1,6 +1,6 @@
 
 """
-This module processes an application's Vertex Array Objects (VAOs)
+This module formats an application's Vertex Array Objects (VAOs)
 """
 
 # Import application modules
