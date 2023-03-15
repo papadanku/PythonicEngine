@@ -2,10 +2,10 @@
 
 My take on Coder Space's Python 3D Engine Series.
 
-## Changes
+## Differences
 
-- Code is from myself following Coder Space's tutorial
-- More documentation on how the program's modules work
+- Code is from myself following Coder Space's video tutorial
+- Included documentation on how the program's modules work
 
 ## Modules
 
@@ -22,3 +22,7 @@ Module | Description | Generated Data
 `texture.py` | Raw texture data
 `vao.py` | Vertex Array Objects
 `vbo.py` | Vertex Buffer Objects
+
+## Notes
+
+- Use literals to initialize data, such as `[]`. Constructor initialization, such as `list()`, changes how vertex data's stored.
