@@ -5,8 +5,7 @@ My take on Coder Space's Python 3D Engine Series.
 ## Changes
 
 - Code is from myself following Coder Space's tutorial
-- Various notes from information I learned from the tutorial
-- Shader coding style
+- More documentation on how the program's modules work
 
 ## Modules
 
