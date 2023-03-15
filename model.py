@@ -1,6 +1,6 @@
 
 """
-This module uses the main graphics application to render models
+This module processes uniform attributes for the appropriate model
 """
 
 # Import Python modules
