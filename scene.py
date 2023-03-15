@@ -6,7 +6,6 @@ This module processes an application's scene objects
 
 # Import application modules
 from model import *
-import glm
 
 
 class Scene:

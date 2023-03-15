@@ -40,20 +40,21 @@ class GraphicsEngine():
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0
-        # Light data (positions, transformation)
+        # Create light data (positions, transformation)
         self.light = Light()
-        # Camera data (positions, transformations)
+        # Create camera data (positions, transformations)
         self.camera = Camera(self)
-        # Mesh data (VBOs, VAOs, shader programs, textures)
+        # Create mesh data (VBOs, VAOs, shader programs, textures)
         self.mesh = Mesh(self)
-        # Scene data (objects)
+        # Accumulate required objects into a Scene
         self.scene = Scene(self)
-        # Scene renderer
+        # Render the accumulated objects from the Scene
         self.scene_renderer = SceneRenderer(self)
 
     def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                # Release everything from memory
                 self.mesh.destroy()
                 self.scene_renderer.destroy()
                 pg.quit()
