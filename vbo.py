@@ -1,6 +1,10 @@
 
 """
-This module processes an application's Vertex Buffer Objects (VBOs)
+This module processes an application's vertex buffer objects (VBOs)
+
+NOTE:
+- VBOs are buffer objects we use for vertex processing
+- In reality, we can use buffer objects for means outside of vertex processing 
 """
 
 # Import Python modules
