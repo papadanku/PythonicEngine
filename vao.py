@@ -45,7 +45,7 @@ class VAO:
             program=self.program.programs['advanced_skybox'],
             vbo=self.vbo.vbos['advanced_skybox'])
 
-    # Converts a Vertex Buffer Object (VBO) to a Vertex Array Object (VAO)
+    # Formats a Vertex Buffer Object (VBO) into a renderable Vertex Array Object (VAO)
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attribs)], skip_errors=True)
         return vao

@@ -25,13 +25,17 @@ Module | Description
 
 ## Rendering Process
 Step | Code | Description | Generated/Processed Data
------|------|-------------|---------------
-1 | `self.light = Light()` | Create sunlight information | Color • Orientation • Matrix
-2 | `self.camera = Camera(self)` | Create camera information | Orientation • Matrices
-3 | `self.mesh = Mesh(self)` | Create all mesh information | VBO • Shaders • VAO • Textures
+-----|------|-------------|-------------------------
+0 | `def __init__()`| Create OpenGL information | OpenGL  
+1 | `self.light = Light()` | Create sunlight data | Color • Orientation • Matrix
+2 | `self.camera = Camera(self)` | Create camera data | Orientation • Matrices
+3 | `self.mesh = Mesh(self)` | Create all mesh data | VBO • Shaders • VAO • Textures
 4 | `self.scene = Scene(self)` | Accumulate objects in scene | `uniform` data for each objects' instance
 5 | `self.scene_renderer = SceneRenderer(self)` | Render accumulated objects in the scene
 
 ## Notes
 
-- Use literals to initialize data, such as `[]`. Constructor initialization, such as `list()`, changes how vertex data's stored.
+- Use literals to initialize data, such as `[]`
+  - Constructor initialization, such as `list()`, changes how data's stored
+- To save memory, create only *one* instance of each mesh's VBO and VAO
+  - Transform each objects' instance in their respective shader program
