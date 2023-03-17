@@ -26,7 +26,7 @@ Module | Description
 ## Rendering Process
 Step | Code | Description | Generated/Processed Data
 -----|------|-------------|-------------------------
-0 | `def __init__()`| Create OpenGL information | OpenGL  
+0 | `def __init__()`| Create OpenGL information | OpenGL version • Window information
 1 | `self.light = Light()` | Create sunlight data | Color • Orientation • Matrix
 2 | `self.camera = Camera(self)` | Create camera data | Orientation • Matrices
 3 | `self.mesh = Mesh(self)` | Create all mesh data | VBO • Shaders • VAO • Textures
@@ -37,5 +37,5 @@ Step | Code | Description | Generated/Processed Data
 
 - Use literals to initialize data, such as `[]`
   - Constructor initialization, such as `list()`, changes how data's stored
-- To save memory, create only *one* instance of each mesh's VBO and VAO
-  - Transform each objects' instance in their respective shader program
+- For each mesh, create *one* shared set of VBO, VAO, and shader programs
+  - Change each mesh instance's attributes through `uniform` attributes
