@@ -27,11 +27,11 @@ Module | Description
 Step | Code | Description | Generated/Processed Data
 -----|------|-------------|-------------------------
 0 | `def __init__()`| Create OpenGL information | OpenGL version • Window information
-1 | `self.light = Light()` | Create sunlight data | Color • Orientation • Matrix
+1 | `self.light = Light()` | Create sunlight data | Color • Orientation • Matrices
 2 | `self.camera = Camera(self)` | Create camera data | Orientation • Matrices
-3 | `self.mesh = Mesh(self)` | Create all mesh data | VBO • Shaders • VAO • Textures
-4 | `self.scene = Scene(self)` | Accumulate objects in scene | `uniform` data for each objects' instance
-5 | `self.scene_renderer = SceneRenderer(self)` | Render accumulated objects in the scene
+3 | `self.mesh = Mesh(self)` | Create all mesh data | VBOs • Shaders • VAOs • Textures
+4 | `self.scene = Scene(self)` | Accumulate all mesh instances in a scene | `uniform` data for each meshes' instance
+5 | `self.scene_renderer = SceneRenderer(self)` | Render the accumulated mesh instances and post-processing
 
 ## Notes
 
