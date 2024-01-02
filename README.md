@@ -36,6 +36,9 @@ Step | Code | Description | Generated/Processed Data
 ## Notes
 
 - Use literals to initialize data, such as `[]`
-  - Constructor initialization, such as `list()`, changes how data's stored
+
+    Initialization (`list()`) changes how data's stored.
+
 - For each mesh, create *one* shared set of VBO, VAO, and shader programs
-  - Change each mesh instance's attributes through `uniform` attributes
+
+    We change each mesh instance's geometric properties through `uniform` attributes.
