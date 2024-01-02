@@ -24,6 +24,7 @@ Module | Description
 `vbo.py` | Vertex Buffer Objects
 
 ## Rendering Process
+
 Step | Code | Description | Generated/Processed Data
 -----|------|-------------|-------------------------
 0 | `def __init__()`| Create OpenGL information | OpenGL version • Window information
