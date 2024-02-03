@@ -4,7 +4,8 @@ This module processes uniform attributes for the appropriate model
 """
 
 # Import Python modules
-import glm
+if __name__ == '__main__':
+    import glm
 
 
 class BaseModel:

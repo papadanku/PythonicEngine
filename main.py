@@ -4,9 +4,10 @@ This module initializes the main graphics application
 """
 
 # Import Python modules
-import moderngl as mgl
-import pygame as pg
-import sys
+if __name__ == '__main__':
+    import moderngl as mgl
+    import pygame as pg
+    import sys
 
 # Import application modules
 from camera import Camera

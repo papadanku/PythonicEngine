@@ -8,8 +8,9 @@ NOTE:
 """
 
 # Import Python modules
-import numpy as np
-import pywavefront
+if __name__ == '__main__':
+    import numpy as np
+    import pywavefront
 
 
 class VBO:

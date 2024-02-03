@@ -1,6 +1,7 @@
 
 # Import Python modules
-import glm
+if __name__ == '__main__':
+    import glm
 
 class Light:
     def __init__(self, position=(50, 50, -10), color=(1, 1, 1)):

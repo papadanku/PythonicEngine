@@ -1,7 +1,8 @@
 
 # Import Python modules
-import glm
-import pygame as pg
+if __name__ == '__main__':
+    import glm
+    import pygame as pg
 
 FOV = 50 # Value in degrees
 NEAR = 0.1

@@ -4,8 +4,9 @@ This module processes an application's textures
 """
 
 # Import Python modules
-import moderngl as mgl
-import pygame as pg
+if __name__ == '__main__':
+    import moderngl as mgl
+    import pygame as pg
 
 
 class Texture:
