@@ -1,6 +1,6 @@
 
 Welcome to 3D-Engine-Python's documentation!
-==============================================
+============================================
 
 .. toctree::
    :maxdepth: 2
