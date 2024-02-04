@@ -1,9 +1,5 @@
-.. GL-Graphics-Engine documentation master file, created by
-   sphinx-quickstart on Fri Feb  2 21:44:44 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to GL-Graphics-Engine's documentation!
+Welcome to 3D-Engine-Python's documentation!
 ==============================================
 
 .. toctree::
