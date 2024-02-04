@@ -1,5 +1,5 @@
-GL-Graphics-Engine
-==================
+3D-Engine-Python
+================
 
 .. toctree::
    :maxdepth: 4

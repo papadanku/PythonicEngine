@@ -21,8 +21,12 @@ class BaseModel:
         self.program = self.vao.program
         self.camera = self.app.camera
 
-    # NOTE: Override update(x) in a subclass
-    def update(self): ...
+    def update(self):
+        """
+        Override update(x) in a subclass
+        """
+
+        pass
 
     def get_model_matrix(self):
         # NOTE: This is just an identity matrix
@@ -46,13 +50,17 @@ class ExtendedBaseModel(BaseModel):
     """
     Subclass for an application's main objects
     """
+
     def __init__(self, app, vao_name, tex_id, pos, rot, scale):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
 
     def update(self):
+        """
+            Update dynamic uniform attributes        
+        """
+        
         self.texture.use(location=0)
-        # Update dynamic uniform attributes
         self.program['camPos'].write(self.camera.position)
         self.program['m_view'].write(self.camera.m_view)
         self.program['m_model'].write(self.m_model)

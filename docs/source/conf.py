@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../.."))
 
-project = 'GL-Graphics-Engine'
+project = '3D-Engine-Python'
 copyright = '2024, papadanku'
 author = 'papadanku'
 

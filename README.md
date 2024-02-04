@@ -1,4 +1,4 @@
-# GL-Graphics-Engine
+# 3D-Engine-Python
 
 My take on Coder Space's Python 3D Engine Series.
 
