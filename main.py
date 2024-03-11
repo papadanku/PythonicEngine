@@ -52,6 +52,9 @@ class GraphicsEngine():
         # Render the accumulated objects from the Scene
         self.scene_renderer = SceneRenderer(self)
 
+    def get_time(self):
+        self.time = pg.time.get_ticks() * 0.001
+
     def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
@@ -68,9 +71,6 @@ class GraphicsEngine():
         self.scene_renderer.render()
         # Swap buffers
         pg.display.flip()
-
-    def get_time(self):
-        self.time = pg.time.get_ticks() * 0.001
 
     def run(self):
         while True:
