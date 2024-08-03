@@ -1,12 +1,13 @@
 
-Welcome to 3D-Engine-Python's documentation!
+Welcome to PythonicEngine's documentation!
 ============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :glob:
 
-   source/modules
+   source/*
 
 Indices and tables
 ==================
