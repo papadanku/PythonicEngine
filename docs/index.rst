@@ -6,7 +6,7 @@ Welcome to 3D-Engine-Python's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   source/modules
 
 Indices and tables
 ==================
