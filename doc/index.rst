@@ -3,7 +3,7 @@ Welcome to PythonicEngine's documentation!
 ============================================
 
 .. toctree::
-   :maxdepth: 2
+   :titlesonly:
    :caption: Contents:
    :glob:
 
