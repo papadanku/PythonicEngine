@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vbo &#8212; PythonicEngine  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=90ee70b1" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PythonicEngine</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/camera.html">camera module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/light.html">light module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/mesh.html">mesh module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/model.html">model module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/scene.html">scene module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/scene_renderer.html">scene_renderer module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/shader_program.html">shader_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/texture.html">texture module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/vao.html">vao module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/vbo.html">vbo module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for vbo</h1><div class="highlight"><pre>
+<span></span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module processes an application&#39;s vertex buffer objects (VBOs)</span>
+
+<span class="sd">NOTE:</span>
+<span class="sd">- VBOs are buffer objects we use for vertex processing</span>
+<span class="sd">- In reality, we can use buffer objects for means outside of vertex processing </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Import Python modules</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pywavefront</span>
+
+
+<div class="viewcode-block" id="VBO">
+<a class="viewcode-back" href="../source/vbo.html#vbo.VBO">[docs]</a>
+<span class="k">class</span> <span class="nc">VBO</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbos</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbos</span><span class="p">[</span><span class="s1">&#39;cube&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CubeVBO</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbos</span><span class="p">[</span><span class="s1">&#39;cat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CatVBO</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbos</span><span class="p">[</span><span class="s1">&#39;skybox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SkyBoxVBO</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbos</span><span class="p">[</span><span class="s1">&#39;advanced_skybox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AdvancedSkyBoxVBO</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VBO.destroy">
+<a class="viewcode-back" href="../source/vbo.html#vbo.VBO.destroy">[docs]</a>
+    <span class="k">def</span> <span class="nf">destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">vbo</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span> <span class="k">for</span> <span class="n">vbo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vbos</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BaseVBO">
+<a class="viewcode-back" href="../source/vbo.html#vbo.BaseVBO">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseVBO</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vbo</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribs</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># NOTE: Override get_vertex_data() in a subclass because it is geometry-dependant</span>
+<div class="viewcode-block" id="BaseVBO.get_vertex_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.BaseVBO.get_vertex_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_vertex_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="BaseVBO.get_vbo">
+<a class="viewcode-back" href="../source/vbo.html#vbo.BaseVBO.get_vbo">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_vbo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertex_data</span><span class="p">()</span>
+        <span class="n">vbo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">vertex_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vbo</span></div>
+
+
+<div class="viewcode-block" id="BaseVBO.destroy">
+<a class="viewcode-back" href="../source/vbo.html#vbo.BaseVBO.destroy">[docs]</a>
+    <span class="k">def</span> <span class="nf">destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbo</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CubeVBO">
+<a class="viewcode-back" href="../source/vbo.html#vbo.CubeVBO">[docs]</a>
+<span class="k">class</span> <span class="nc">CubeVBO</span><span class="p">(</span><span class="n">BaseVBO</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s1">&#39;2f 3f 3f&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;in_texcoord_0&#39;</span><span class="p">,</span> <span class="s1">&#39;in_normal&#39;</span><span class="p">,</span> <span class="s1">&#39;in_position&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="CubeVBO.get_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.CubeVBO.get_data">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="c1"># NOTE: Uses list comprehension to Outputs large list of tuples!</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">indices</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">triangle</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f4&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CubeVBO.get_vertex_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.CubeVBO.get_vertex_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_vertex_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get vertex coordinates</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+                    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+
+        <span class="c1"># Get texture coordinates</span>
+        <span class="n">tex_coord_vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="n">tex_coord_indices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                             <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                             <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                             <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                             <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                             <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),]</span>
+        <span class="n">tex_coord_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">tex_coord_vertices</span><span class="p">,</span> <span class="n">tex_coord_indices</span><span class="p">)</span>
+
+        <span class="c1"># Get normals</span>
+        <span class="c1"># NOTE: Multiply tuples by 6 because each face, which has 6 vertices, have the same normal</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="p">[(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
+                   <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
+                   <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
+                   <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
+                   <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
+                   <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,]</span>
+        <span class="n">normals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normals</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># NOTE: We horizontally concat per-vertex data</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">normals</span><span class="p">,</span> <span class="n">vertex_data</span><span class="p">])</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">tex_coord_data</span><span class="p">,</span> <span class="n">vertex_data</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">vertex_data</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CatVBO">
+<a class="viewcode-back" href="../source/vbo.html#vbo.CatVBO">[docs]</a>
+<span class="k">class</span> <span class="nc">CatVBO</span><span class="p">(</span><span class="n">BaseVBO</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s1">&#39;2f 3f 3f&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;in_texcoord_0&#39;</span><span class="p">,</span> <span class="s1">&#39;in_normal&#39;</span><span class="p">,</span> <span class="s1">&#39;in_position&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="CatVBO.get_vertex_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.CatVBO.get_vertex_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_vertex_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">objs</span> <span class="o">=</span> <span class="n">pywavefront</span><span class="o">.</span><span class="n">Wavefront</span><span class="p">(</span><span class="s1">&#39;objects/cat/20430_Cat_v1_NEW.obj&#39;</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">objs</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">popitem</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vertex_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f4&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vertex_data</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SkyBoxVBO">
+<a class="viewcode-back" href="../source/vbo.html#vbo.SkyBoxVBO">[docs]</a>
+<span class="k">class</span> <span class="nc">SkyBoxVBO</span><span class="p">(</span><span class="n">BaseVBO</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s1">&#39;3f&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;in_position&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SkyBoxVBO.get_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.SkyBoxVBO.get_data">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="c1"># NOTE: Uses list comprehension to Outputs large list of tuples!</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">indices</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">triangle</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f4&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SkyBoxVBO.get_vertex_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.SkyBoxVBO.get_vertex_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_vertex_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get vertex coordinates</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+                    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">vertex_data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vertex_data</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AdvancedSkyBoxVBO">
+<a class="viewcode-back" href="../source/vbo.html#vbo.AdvancedSkyBoxVBO">[docs]</a>
+<span class="k">class</span> <span class="nc">AdvancedSkyBoxVBO</span><span class="p">(</span><span class="n">BaseVBO</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s1">&#39;3f&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;in_position&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="AdvancedSkyBoxVBO.get_vertex_data">
+<a class="viewcode-back" href="../source/vbo.html#vbo.AdvancedSkyBoxVBO.get_vertex_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_vertex_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># NOTE: Generates a fullscreen quad through a large triangle</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mf">0.9999</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">z</span><span class="p">)]</span>
+        <span class="n">vertex_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;f4&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vertex_data</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2024, papadanku.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
