@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>camera &#8212; PythonicEngine  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=92c7a39a" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PythonicEngine</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/camera.html">camera module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/light.html">light module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/mesh.html">mesh module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/model.html">model module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/scene.html">scene module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/scene_renderer.html">scene_renderer module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/shader_program.html">shader_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/texture.html">texture module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/vao.html">vao module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/vbo.html">vbo module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for camera</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1"># Import Python modules</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">glm</span>
+    <span class="kn">import</span> <span class="nn">pygame</span> <span class="k">as</span> <span class="nn">pg</span>
+
+<span class="n">FOV</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># Value in degrees</span>
+<span class="n">NEAR</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">FAR</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">SPEED</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">SENSITIVITY</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<div class="viewcode-block" id="Camera">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera">[docs]</a>
+<span class="k">class</span> <span class="nc">Camera</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">yaw</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aspect_ratio</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">WIN_SIZE</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">app</span><span class="o">.</span><span class="n">WIN_SIZE</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Setup camera/eye position and up-vector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">vec3</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Setup orthonormal basis vectors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">vec3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Setup orientations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">=</span> <span class="n">yaw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="n">pitch</span>
+        <span class="c1"># View matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_view_matrix</span><span class="p">()</span>
+        <span class="c1"># Projection matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_proj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_projection_matrix</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Camera.rotate">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera.rotate">[docs]</a>
+    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rel_x</span><span class="p">,</span> <span class="n">rel_y</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_rel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">+=</span> <span class="n">rel_x</span> <span class="o">*</span> <span class="n">SENSITIVITY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">-=</span> <span class="n">rel_y</span> <span class="o">*</span> <span class="n">SENSITIVITY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mi">89</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">89</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Camera.update_camera_vectors">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera.update_camera_vectors">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_camera_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        We emulate a first-person camera by rotating around the Z-axis and X-axis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">yaw</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">)</span>
+        <span class="n">pitch</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">yaw</span><span class="p">)</span> <span class="o">*</span> <span class="n">glm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">yaw</span><span class="p">)</span> <span class="o">*</span> <span class="n">glm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">glm</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">glm</span><span class="o">.</span><span class="n">vec3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">=</span> <span class="n">glm</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">glm</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Camera.update">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_camera_vectors</span><span class="p">()</span>
+        <span class="c1"># Re-calculate the view matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_view_matrix</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Camera.move">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera.move">[docs]</a>
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">velocity</span> <span class="o">=</span> <span class="n">SPEED</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">delta_time</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_w</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">*</span> <span class="n">velocity</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_s</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">*</span> <span class="n">velocity</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_a</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">*</span> <span class="n">velocity</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_d</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">*</span> <span class="n">velocity</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_q</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">*</span> <span class="n">velocity</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="n">pg</span><span class="o">.</span><span class="n">K_e</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">up</span> <span class="o">*</span> <span class="n">velocity</span></div>
+
+
+<div class="viewcode-block" id="Camera.get_view_matrix">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera.get_view_matrix">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_view_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">glm</span><span class="o">.</span><span class="n">lookAt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Camera.get_projection_matrix">
+<a class="viewcode-back" href="../source/camera.html#camera.Camera.get_projection_matrix">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_projection_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">glm</span><span class="o">.</span><span class="n">perspective</span><span class="p">(</span><span class="n">glm</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">FOV</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">aspect_ratio</span><span class="p">,</span> <span class="n">NEAR</span><span class="p">,</span> <span class="n">FAR</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2024, papadanku.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
