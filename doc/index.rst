@@ -8,3 +8,9 @@ Welcome to PythonicEngine's documentation!
 
    */index
 
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
